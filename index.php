@@ -1,3 +1,12 @@
+<?php
+// Tambahkan ini di LINE 1
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Handle form submission langsung dari index.php
+    require_once 'simpan.php';
+    exit;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
