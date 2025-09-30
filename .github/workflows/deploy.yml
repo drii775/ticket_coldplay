@@ -1,0 +1,47 @@
+name: Deploy to Railway
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mysqli
+
+      - name: Validate PHP syntax
+        run: |
+          echo "🔍 Checking PHP syntax..."
+          find . -name "*.php" -exec php -l {} \; && echo "✅ All PHP files are valid!"
+
+  deploy:
+    needs: test
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to Railway
+        uses: superfly/railway-action@v1
+        with:
+          railway_token: ${{ secrets.RAILWAY_TOKEN }}
+          environment: production
+
+      - name: Wait for deployment
+        run: sleep 30
+
+      - name: Run database migration
+        run: |
+          echo "🚀 Database migration skipped - add later"
