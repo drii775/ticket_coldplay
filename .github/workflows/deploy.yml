@@ -21,18 +21,18 @@ jobs:
         run: |
           find . -name "*.php" -exec php -l {} \;
 
-  deploy:
-    needs: test
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+  # deploy:
+  #   needs: test
+  #   if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4
 
-      - name: Install Railway CLI
-        run: npm install -g @railway/cli
+  #     - name: Install Railway CLI
+  #       run: npm install -g @railway/cli
 
-      - name: Deploy to Railway
-        run: railway up --service ticket_coldplay
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+  #     - name: Deploy to Railway
+  #       run: railway up --service ticket_coldplay
+  #       env:
+  #         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
